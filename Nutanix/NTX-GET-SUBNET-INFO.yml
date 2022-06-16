@@ -1,1 +1,24 @@
+---
+  - name: Nutanix Cluster Information
+    hosts: localhost
+    connection: local
+    gather_facts: false
 
+    tasks:
+      - name: Retrieve Information of the Nutanix Cluster
+        uri:
+            url: "https://{{ prism }}:9440/api/nutanix/v3/clusters/list"
+            user: "{{ prism_user }}"
+            password: "{{ prism_pass }}"
+            method: POST
+            status_code: 200
+            body: '{}'
+            force_basic_auth: yes
+            validate_certs: no
+            body_format: json
+            return_content: true
+        register: cluster_info
+
+      - name: Display a Nuatnix Cluster Information
+        debug:
+          msg: "{{ cluster_info.json }}"
