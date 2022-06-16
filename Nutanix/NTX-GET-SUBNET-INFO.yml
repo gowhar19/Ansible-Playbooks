@@ -5,20 +5,19 @@
     gather_facts: false
 
     tasks:
-      - name: Retrieve Information of the Nutanix Cluster
+      - name: Retrieve Information for Subnet
         uri:
-            url: "https://{{ prism }}:9440/api/nutanix/v3/clusters/list"
-            user: "{{ prism_user }}"
-            password: "{{ prism_pass }}"
-            method: POST
-            status_code: 200
-            body: '{}'
-            force_basic_auth: yes
-            validate_certs: no
-            body_format: json
-            return_content: true
-        register: cluster_info
+           url: "https://{{ prism }}:9440/api/nutanix/v3/subnets/list"
+           user: "{{ prism_user }}"
+           password: "{{ prism_passw             }}"
+           method: POST
+           body: "{{ lookup('file','get_subnet.json') }}"
+           force_basic_auth: yes
+           validate_certs: no
+           body_format: json
+           return_content: true
+        register: vm_subnet
 
       - name: Display a Nuatnix Cluster Information
         debug:
-          msg: "{{ cluster_info.json }}"
+          msg: "{{ vm_subnet }}"
