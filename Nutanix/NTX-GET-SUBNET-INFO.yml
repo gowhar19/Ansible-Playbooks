@@ -21,3 +21,4 @@
       - name: Display a Nuatnix vm_subnet Information
         debug:
           msg: "{{ vm_subnet.json }}"
+...
