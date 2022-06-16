@@ -1,5 +1,5 @@
 ---
-  - name: Nutanix Cluster Information
+  - name: Nutanix vm_subnet Information
     hosts: localhost
     connection: local
     gather_facts: false
@@ -9,9 +9,9 @@
         uri:
            url: "https://{{ prism }}:9440/api/nutanix/v3/subnets/list"
            user: "{{ prism_user }}"
-           password: "{{ prism_passw             }}"
+           password: "{{ prism_pass }}"
            method: POST
-           body: "{{ lookup('file','get_subnet.json') }}"
+           body: "{}"
            force_basic_auth: yes
            validate_certs: no
            body_format: json
