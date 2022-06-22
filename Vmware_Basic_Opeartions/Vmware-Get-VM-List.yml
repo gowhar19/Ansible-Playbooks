@@ -11,7 +11,7 @@
           user: "{{ vcenter_user }}"
           password: "{{ vcenter_pass }}"
           force_basic_auth: yes
-          method: GET
+          method: POST
           body: "{}"
           body_format: json
           status_code: 200
