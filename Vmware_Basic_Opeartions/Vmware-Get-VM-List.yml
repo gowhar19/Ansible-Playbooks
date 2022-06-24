@@ -3,24 +3,33 @@
    hosts: localhost
    gather_facts: false
    connection: local
-  
+
    tasks:
     - name: VCenter login
-      url:
-          url: "https://{{ vcenter_ip }}/rest/com/vmware/cis/session"
-          user: "{{ vcenter_user }}"
-          password: "{{ vcenter_pass }}"
-          force_basic_auth: yes
-          method: POST
-          body: "{}"
-          body_format: json
-          status_code: 200
-          validate_certs: no
-          return_content: true
+      uri:
+         url: "https://{{ vcenter_ip }}/rest/com/vmware/cis/session"
+         user: "{{ vcenter_user }}"
+         password: "{{ vcenter_pass }}"
+         force_basic_auth: yes
+         method: POST
+         validate_certs: no
+      register: login_vc
+
+
+    - name:  Get the List of Virtual Machines
+      uri:
+         url: "https://{{ vcenter_ip }}/rest/vcenter/vm"
+         force_basic_auth: yes
+         validate_certs: no
+         headers:
+          cookie: "{{ login_vc.set_cookie }}"
       register: get_vms_list
 
-    - name: Display VM list for VCenter
+
+    - name: Display VM list from VCenter
       debug:
-          msg: "{{ get_vms_list.json }}"
+         msg: "{{ item.name }}"
+      with_items: "{{ get_vms_list.json.value }}"
 ...
+
       
