@@ -26,7 +26,7 @@
       register: get_vms_list
 
 
-    - name: Display VM list from VCenter
+    - name: Display all VM names from VCenter
       debug:
          msg: "{{ item.name }}"
       with_items: "{{ get_vms_list.json.value }}"
