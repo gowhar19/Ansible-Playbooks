@@ -1,0 +1,5 @@
+# ALL Nuatnix Variables #
+
+vcenter_ip: prodvc.bbmprod.local
+vcenter_user: administrator@vsphere.local
+vcenter_pass: P@ssw0rd
