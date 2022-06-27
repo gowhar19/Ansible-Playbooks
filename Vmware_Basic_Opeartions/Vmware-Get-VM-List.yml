@@ -22,14 +22,21 @@
          force_basic_auth: yes
          validate_certs: no
          headers:
-          cookie: "{{ login_vc.set_cookie }}"
+           cookie: "{{ login_vc.set_cookie }}"
       register: get_vms_list
 
 
-    - name: Display all VM names from VCenter
+    - name: Display VM list from the VCenter
       debug:
          msg: "{{ item.name }}"
       with_items: "{{ get_vms_list.json.value }}"
+
+    - name: Output the result to a CSV File
+      template:
+        src: generate_csv.j2
+        dest: Vmware_VM_List.csv
+
 ...
+
 
       
