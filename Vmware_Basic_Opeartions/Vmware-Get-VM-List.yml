@@ -23,13 +23,13 @@
          validate_certs: no
          headers:
            cookie: "{{ login_vc.set_cookie }}"
-      register: get_vms_list
+      register: v_output
 
 
     - name: Display VM list from the VCenter
       debug:
          msg: "{{ item.name }}"
-      with_items: "{{ get_vms_list.json.value }}"
+      with_items: "{{ v_output.json.value }}"
 
     - name: Output the result to a CSV File
       template:
