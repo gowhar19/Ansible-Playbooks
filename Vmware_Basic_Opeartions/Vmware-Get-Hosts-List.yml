@@ -24,7 +24,7 @@
            Cookie: "{{ login_vc.set_cookie }}"
       register: v_hosts
 
-    - name: Print the name of the Cluster
+    - name: Print the name of the Hosts
       debug:
          msg: "{{ item.name }}"
       with_items: "{{ v_hosts.json.value }}"
