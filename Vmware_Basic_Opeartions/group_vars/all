@@ -1,4 +1,4 @@
-# ALL Nuatnix Variables #
+# ALL Vmware Variables #
 
 vcenter_ip: prodvc.bbmprod.local
 vcenter_user: administrator@vsphere.local
