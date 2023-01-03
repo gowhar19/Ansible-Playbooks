@@ -1,0 +1,19 @@
+---
+ - name: Create the Instance on AWS.
+   hosts: localhost
+
+   tasks:
+     - name: Launch instance
+       ec2:
+          key_name: "{{ keypair }}"
+          group: "{{ security_group }}"
+          instance_type: "{{ instance_type }}"
+          image: "{{ image }}"
+          wait: true
+          region: "{{ region }}"
+          vpc_subnet_id: "{{ vpc_subnet_id }}" 
+          assign_public_ip: yes
+       register: ec2
+
+
+  
