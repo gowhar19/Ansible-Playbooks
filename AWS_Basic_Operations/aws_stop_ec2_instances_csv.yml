@@ -1,0 +1,31 @@
+---
+- name: Start an EC2 instance
+  hosts: localhost
+  gather_facts: false
+  connection: local
+  vars_prompt:
+    - name: "region"
+      prompt: "Mention the region"
+      default: "us-east-1"
+      private: no
+
+  tasks:
+    - name: Read a CSV file for Virtual Machine names
+      read_csv:
+         path: ec2-list.csv
+      delegate_to: localhost
+      register: v_ec2
+
+    - name: Display the VM names from the CSV file
+      debug:
+         msg: "{{ item.ec2names }}"
+      loop: "{{ v_ec2.list }}"
+
+    - name: Start instance
+      ec2:
+        aws_access_key: "xxxxxxxxxxxxxxxx"
+        aws_secret_key: "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
+        region: "{{ region }}"
+        instance_ids: '{{ item.ec2names }}'
+        state: stopped
+      loop: "{{ v_ec2.list }}"
