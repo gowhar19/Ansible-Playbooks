@@ -1,0 +1,41 @@
+---
+ - name: Create an Instance on AWS.
+   hosts: localhost
+   vars:
+       key_pair: ansible_keypair
+       aws_access_key: XXXXXXXXXXXXXXXXX
+       aws_secret_key: XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+       security_group: ansible_sg
+       instance_type: t1.micro
+       image: ami-0b5eea76982371e91
+       region: us-east-1
+       vpc_subnet_id: subnet-08b4add012e7203f7
+
+   tasks:
+     - name: Read a CSV file for Virtual Machine names
+       read_csv:
+         path: create-ec2-list.csv
+       delegate_to: localhost
+       register: v_ec2
+
+     - name: Display the EC2 names from the CSV file
+       debug:
+         msg: "{{ item.ec2names }}"
+       loop: "{{ v_ec2.list }}"
+
+     - name: Launch instance
+       ec2:
+          aws_access_key: "{{ aws_access_key }}"
+          aws_secret_key: "{{ aws_secret_key }}"
+          key_name: "{{ key_pair }}"
+          instance_tags:
+            Name: "{{ item.ec2names }}"
+          group: "{{ security_group }}"
+          instance_type: "{{ instance_type }}"
+          image: "{{ image }}"
+          wait: true
+          region: "{{ region }}"
+          vpc_subnet_id: "{{ vpc_subnet_id }}"
+          assign_public_ip: yes
+       register: ec2
+       loop: "{{ v_ec2.list }}"
