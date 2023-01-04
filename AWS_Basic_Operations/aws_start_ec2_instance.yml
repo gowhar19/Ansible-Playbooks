@@ -1,0 +1,22 @@
+---
+- name: Start an EC2 instance
+  hosts: localhost
+  gather_facts: false
+  connection: local
+  vars_prompt:
+    - name: "region"
+      prompt: "Mention the region"
+      default: "us-east-1"
+      private: no
+    - name: "instance_ids"
+      prompt: "Mention the instance_id"
+      private: no
+
+  tasks:
+    - name: Start instance
+      ec2:
+        aws_access_key: "xxxxxxxxxxxxxxxx"
+        aws_secret_key: "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
+        region: "{{ region }}"
+        instance_ids: '{{ instance_ids }}'
+        state: running
