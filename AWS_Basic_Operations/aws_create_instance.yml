@@ -1,19 +1,33 @@
 ---
- - name: Create the Instance on AWS.
+ - name: Create an Instance on AWS.
    hosts: localhost
+   vars:
+       key_pair: ansible_keypair
+       aws_access_key: XXXXXXXXXXXXXXXXX
+       aws_secret_key: XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+       security_group: ansible_sg
+       instance_type: t1.micro
+       image: ami-0b5eea76982371e91
+       region: us-east-1
+       vpc_subnet_id: subnet-08b4add012e7203f7
 
    tasks:
      - name: Launch instance
        ec2:
-          key_name: "{{ keypair }}"
+          aws_access_key: "{{ aws_access_key }}"
+          aws_secret_key: "{{ aws_secret_key }}"
+          key_name: "{{ key_pair }}"
+          instance_tags:
+            Name: Demo
           group: "{{ security_group }}"
           instance_type: "{{ instance_type }}"
           image: "{{ image }}"
           wait: true
           region: "{{ region }}"
-          vpc_subnet_id: "{{ vpc_subnet_id }}" 
+          vpc_subnet_id: "{{ vpc_subnet_id }}"
           assign_public_ip: yes
        register: ec2
+
 
 
   
