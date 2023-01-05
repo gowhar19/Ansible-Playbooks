@@ -1,6 +1,0 @@
-{% set s_no = 1 %}
-S.NO.,VM-ID,CPU-Count,Memory-size-MiB,Power-State,VM-Name
-{% for each in v_output.json.value %}
-{{ s_no }},{{ each.vm }},{{ each.cpu_count }},{{ each.memory_size_MiB }},{{ each.power_state }},{{ each.name }}
-{% set s_no = s_no + 1 %}
-{% endfor %}
