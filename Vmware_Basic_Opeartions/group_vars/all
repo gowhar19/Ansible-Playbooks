@@ -1,9 +1,0 @@
-# ALL Vmware Variables #
-
-vcenter_ip: prodvc.bbmprod.local
-vcenter_user: administrator@vsphere.local
-vcenter_pass: P@ssw0rd
-template_name: WIN-2019-Template
-datastore_name: v5000_Lun
-folder_name: /BBM-Datacenter/vm/vms
-dc_name: BBM-Datacenter
