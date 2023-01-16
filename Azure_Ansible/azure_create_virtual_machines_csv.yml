@@ -1,0 +1,59 @@
+---
+- name: Create a virtual machine on Azure
+  hosts: localhost
+  connection: local
+  vars:
+     resource_group: sg_group
+     vm_name: demovm
+     vm_image_name:
+     location: eastus
+     admin_username: demouser
+     admin_password: P@ssw0rd123
+  tasks:
+
+    - name: Create a resource group for vnet
+      azure_rm_resourcegroup:
+          name: sg_group
+          location: "{{ location }}"
+
+    - name: Create a Virtual Network
+      azure_rm_virtualnetwork:
+          resource_group: "{{ resource_group }}"
+          name: azVnet
+          address_prefixes: "10.0.0.0/16"
+
+    - name: Add a Subnet
+      azure_rm_subnet:
+          resource_group: "{{ resource_group }}"
+          name: azSubnet
+          address_prefix: "10.0.1.0/24"
+          virtual_network: azVnet
+
+
+    - name: Read a CSV file for Virtual Machine names
+      read_csv:
+         path: create_vm_list.csv
+         #delegate_to: localhost
+      register: azvms
+
+
+    - name: Display the EC2 names from the CSV file
+      debug:
+         msg: "{{ item.vmnames }}"
+      loop: "{{ azvms.list }}"
+
+
+    - name: Create Virtual Machine
+      azure_rm_virtualmachine:
+          resource_group: "{{ resource_group }}"
+          name: "{{ item.vmnames }}"
+          admin_username: "{{ admin_username }}"
+          admin_password: "{{ admin_password }}"
+          vm_size: Standard_B1ms
+          image:
+               offer: RHEL #uServer
+               publisher: RedHat #Canonical
+               sku: 8 # 22_04-lts-ARM
+               version: latest
+      register: azsvr
+      loop: "{{ azvms.list }}"
