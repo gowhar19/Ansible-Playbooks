@@ -37,7 +37,7 @@
       register: azvms
 
 
-    - name: Display the EC2 names from the CSV file
+    - name: Display the VM names from the CSV file
       debug:
          msg: "{{ item.vmnames }}"
       loop: "{{ azvms.list }}"
